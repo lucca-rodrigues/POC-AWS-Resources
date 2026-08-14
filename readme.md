@@ -55,7 +55,38 @@ curl http://localhost:3000/s3/object/my-bucket/hello.txt
 
 ---
 
-## Testar Lambda
+## Estudar Lambda (script dedicado)
+
+Para estudar o **ciclo de vida completo** da Lambda (create → invoke → update → delete) com código claro e sem fricção de empacotamento, use o script dedicado:
+
+```bash
+node src/lambda-study.js
+```
+
+O script:
+1. Define o handler inline (edite `HANDLER_CODE` no topo do arquivo)
+2. **Empacota o ZIP automaticamente** (sem passo manual)
+3. Cria a função
+4. Invoca com payloads diferentes
+5. Atualiza o código (hot-reload) e invoca de novo
+6. Deleta a função
+
+Saída esperada:
+
+```
+[1] Função criada: arn:aws:lambda:us-east-1:000000000000:function:study-function
+[2] Invocação ({"name":"Lucas"}) -> { message: 'Hello Lucas!', timestamp: '...' }
+[2] Invocação ({}) -> { message: 'Hello world!', timestamp: '...' }
+[3] Código atualizado (hot-reload)
+[2] Invocação ({"a":2,"b":3}) -> { sum: 5 }
+[4] Função deletada
+```
+
+> **Dica de estudo:** edite o `HANDLER_CODE` para testar diferentes lógicas (processar eventos, ler variáveis de ambiente, chamar outros serviços AWS) e rode o script de novo.
+
+---
+
+## Testar Lambda (via servidor ponte)
 
 ### 1. Criar a função
 
