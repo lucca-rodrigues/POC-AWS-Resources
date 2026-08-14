@@ -64,6 +64,22 @@ Saída esperada do deploy:
 
 O passo `-> ... respondeu` mostra a **invocação da Lambda** — é a função criada sendo usada.
 
+### Acessar no navegador
+
+Após o deploy, o script cria uma **Function URL** pública e a imprime. Cole essa URL no navegador para acessar a Lambda por HTTP:
+
+```
+Navegador (URL): http://<id>.lambda-url.us-east-1.localhost:4566/
+```
+
+Exemplo de resposta no navegador:
+
+```json
+{"message":"Hello world!","timestamp":"2026-08-14T19:52:29.489Z","stage":"dev"}
+```
+
+> **Nota:** pela URL, a Lambda recebe o evento no **formato proxy** (como API Gateway) — sem o campo `name`, então responde `Hello world!`. O `floci:invoke` envia `{"name":"Lucas"}` direto, respondendo `Hello Lucas!`.
+
 ---
 
 ## Estrutura

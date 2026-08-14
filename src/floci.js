@@ -26,7 +26,7 @@ import {
 	DeleteObjectCommand,
 	DeleteBucketCommand,
 } from "@aws-sdk/client-s3";
-import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
+import { LambdaClient, InvokeCommand, CreateFunctionUrlConfigCommand, GetFunctionUrlConfigCommand } from "@aws-sdk/client-lambda";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -136,6 +136,29 @@ async function findFunctionName() {
 	return fn.PhysicalResourceId;
 }
 
+// Busca (ou cria) a URL pública da função e devolve o endpoint HTTP.
+// O floci ignora o FunctionUrlConfig do template SAM, então criamos a URL
+// explicitamente via API (o mesmo que `aws lambda create-function-url-config`).
+async function getFunctionUrl(functionName) {
+	try {
+		const { FunctionUrl } = await lambda.send(
+			new CreateFunctionUrlConfigCommand({
+				FunctionName: functionName,
+				AuthType: "NONE",
+			}),
+		);
+		return FunctionUrl;
+	} catch (err) {
+		if (err.name === "ResourceConflictException") {
+			const { FunctionUrl } = await lambda.send(
+				new GetFunctionUrlConfigCommand({ FunctionName: functionName }),
+			);
+			return FunctionUrl;
+		}
+		throw err;
+	}
+}
+
 // Invoca a Lambda com um payload e imprime a resposta.
 async function invoke(functionName) {
 	const result = await lambda.send(
@@ -156,12 +179,14 @@ async function deploy() {
 	await createStack();
 	await waitForStack();
 	const functionName = await findFunctionName();
+	const url = await getFunctionUrl(functionName);
 	const response = await invoke(functionName);
 	console.log(
 		`\n✅ Lambda publicada e no ar! Nome: ${functionName}\n` +
-			`   Acesse com: npm run floci:invoke\n` +
-			`   Limpe com:  npm run floci:delete\n` +
-			`   Resposta:   ${JSON.stringify(response.body || response)}`,
+			`   Acesse (invocar): npm run floci:invoke\n` +
+			`   Navegador (URL):  ${url}\n` +
+			`   Limpe com:        npm run floci:delete\n` +
+			`   Resposta:         ${JSON.stringify(response.body || response)}`,
 	);
 }
 
