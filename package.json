@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "floci:deploy": "node src/sam-floci.js"
+    "floci:deploy": "node src/floci.js deploy",
+    "floci:invoke": "node src/floci.js invoke",
+    "floci:delete": "node src/floci.js delete"
   },
   "keywords": [],
   "author": "",

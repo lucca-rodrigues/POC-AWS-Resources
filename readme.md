@@ -9,7 +9,7 @@ via Docker). O deploy usa **Infraestrutura como Código (IaC)** com o formato
 ## Como funciona
 
 O floci (v1.6.0+) **expande o transform SAM** no CloudFormation. Você define a
-Lambda em `src/app/template.yaml` e o script `src/sam-floci.js` publica no floci,
+Lambda em `src/app/template.yaml` e o script `src/floci.js` publica no floci,
 espelhando o que `sam package` + `sam deploy` fazem na AWS real.
 
 ```
@@ -34,23 +34,35 @@ docker compose up -d
 # 2. Instala dependências (só na primeira vez)
 npm install
 
-# 3. Cria e publica a Lambda no floci
+# 3. Cria e publica a Lambda no floci (mantém no ar)
 npm run floci:deploy
+
+# 4. Acessa (invoca) a Lambda já publicada
+npm run floci:invoke
+
+# 5. Limpa o ambiente quando terminar
+npm run floci:delete
 ```
 
-Saída esperada:
+Saída esperada do deploy:
 
 ```
 [1] Bucket S3 criado: sam-study-bucket
 [2] Código empacotado e enviado: s3://sam-study-bucket/function.zip
 [3] Stack criada: sam-study (aguardando CREATE_COMPLETE...)
 [4] Stack pronta (CREATE_COMPLETE)
-[5] Invocação -> { statusCode: 200, headers: {...}, body: '{"message":"Hello Lucas!",...}' }
-[6] Stack deletada
-[7] S3 limpo
+-> sam-study-HelloFunction-... respondeu: { statusCode: 200, body: '{"message":"Hello Lucas!",...}' }
+
+✅ Lambda publicada e no ar! Nome: sam-study-HelloFunction-...
 ```
 
-O passo `[5]` mostra a **invocação da Lambda** — é a função criada sendo usada.
+| Script | O que faz |
+|--------|-----------|
+| `npm run floci:deploy` | Cria e publica a Lambda (mantém no ar) |
+| `npm run floci:invoke` | Acessa (invoca) a Lambda já publicada |
+| `npm run floci:delete` | Limpa (deleta a stack e o S3) |
+
+O passo `-> ... respondeu` mostra a **invocação da Lambda** — é a função criada sendo usada.
 
 ---
 
@@ -61,14 +73,17 @@ src/
 ├── app/
 │   ├── template.yaml        # IaC — define a Lambda (runtime, env, handler)
 │   └── src/handler.js       # Código real da Lambda (CommonJS)
-├── sam-floci.js             # Publica a Lambda no floci
+├── floci.js                 # Publica a Lambda no floci
 └── resources/
     └── lambda-zip.js        # Empacota o código em ZIP
 ```
 
 - **`src/app/src/handler.js`** — onde você escreve o código da função (edite aqui).
 - **`src/app/template.yaml`** — onde você declara a infra da Lambda (edite aqui).
-- **`src/sam-floci.js`** — o deploy: empacota, publica, invoca e limpa.
+- **`src/floci.js`** — CLI: cria e publica, acessa (invoca) e limpa a Lambda.
+  - `deploy` → cria e publica (mantém no ar)
+  - `invoke` → acessa a função já publicada
+  - `delete` → limpa o ambiente
 
 ---
 

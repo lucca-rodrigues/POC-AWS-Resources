@@ -27,7 +27,7 @@ src/app/
 npm run floci:deploy
 ```
 
-O script `src/sam-floci.js` espelha o que `sam package` + `sam deploy` fazem
+O script `src/floci.js` espelha o que `sam package` + `sam deploy` fazem
 na AWS real, mas apontando para o floci (`http://localhost:4566`).
 
 ## O que o `template.yaml` declara

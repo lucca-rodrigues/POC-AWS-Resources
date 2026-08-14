@@ -1,10 +1,15 @@
 // ===========================================================================
-// PUBLICAR A LAMBDA NO FLOCI VIA SAM (IaC)
+// CLI — CRIA, PUBLICA E ACESSA UMA LAMBDA NO FLOCI
 // ---------------------------------------------------------------------------
 // Simula o fluxo real de deploy do AWS SAM dentro do floci:
 //   empacotar código -> upload p/ S3 -> criar stack CloudFormation
 //   (floci expande o transform SAM) -> invocar Lambda -> deletar stack.
 // Espelha o que `sam package` + `sam deploy` fazem na AWS real.
+//
+// Uso:
+//   node src/floci.js deploy   -> cria e publica a Lambda (mantém no ar)
+//   node src/floci.js invoke   -> acessa (invoca) a Lambda já publicada
+//   node src/floci.js delete   -> limpa (deleta a stack e o S3)
 // ===========================================================================
 
 import {
@@ -29,9 +34,9 @@ import "dotenv/config";
 import { buildZipFromDir } from "./resources/lambda-zip.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SAM_APP_DIR = path.resolve(__dirname, "app");
-const TEMPLATE_PATH = path.join(SAM_APP_DIR, "template.yaml");
-const SRC_DIR = path.join(SAM_APP_DIR, "src");
+const APP_DIR = path.resolve(__dirname, "app");
+const TEMPLATE_PATH = path.join(APP_DIR, "template.yaml");
+const SRC_DIR = path.join(APP_DIR, "src");
 
 const ENDPOINT = process.env.FLOCI_ENDPOINT || "http://localhost:4566";
 const REGION = process.env.AWS_REGION || "us-east-1";
@@ -97,9 +102,7 @@ async function createStack() {
 			Capabilities: ["CAPABILITY_IAM"],
 		}),
 	);
-	console.log(
-		`[3] Stack criada: ${STACK_NAME} (aguardando CREATE_COMPLETE...)`,
-	);
+	console.log(`[3] Stack criada: ${STACK_NAME} (aguardando CREATE_COMPLETE...)`);
 }
 
 // Aguarda a stack terminar de criar.
@@ -142,31 +145,60 @@ async function invoke(functionName) {
 		}),
 	);
 	const response = JSON.parse(Buffer.from(result.Payload).toString("utf-8"));
-	console.log(`[5] Invocação ->`, response);
+	console.log(`-> ${functionName} respondeu:`, response);
+	return response;
 }
 
-// Deleta a stack e limpa o S3.
-async function cleanup() {
+// Ação 1: cria e publica a Lambda, mantendo-a no ar.
+async function deploy() {
+	await ensureBucket();
+	await uploadCode();
+	await createStack();
+	await waitForStack();
+	const functionName = await findFunctionName();
+	const response = await invoke(functionName);
+	console.log(
+		`\n✅ Lambda publicada e no ar! Nome: ${functionName}\n` +
+			`   Acesse com: npm run floci:invoke\n` +
+			`   Limpe com:  npm run floci:delete\n` +
+			`   Resposta:   ${JSON.stringify(response.body || response)}`,
+	);
+}
+
+// Ação 2: acessa (invoca) a Lambda já publicada.
+async function access() {
+	const functionName = await findFunctionName();
+	const response = await invoke(functionName);
+	console.log(
+		`\n✅ Lambda ${functionName} acessada!\n` +
+			`   Resposta:   ${JSON.stringify(response.body || response)}`,
+	);
+}
+
+// Ação 3: limpa (deleta a stack e o S3).
+async function deleteStack() {
 	await cfn.send(new DeleteStackCommand({ StackName: STACK_NAME }));
 	console.log("[6] Stack deletada");
 
 	await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: ZIP_KEY }));
 	await s3.send(new DeleteBucketCommand({ Bucket: BUCKET }));
 	console.log("[7] S3 limpo");
+	console.log("\n✅ Ambiente limpo!");
 }
 
-async function main() {
-	await ensureBucket();
-	await uploadCode();
-	await createStack();
-	await waitForStack();
-	const functionName = await findFunctionName();
-	await invoke(functionName);
-	await cleanup();
-	console.log("\nPublicação e consumo da Lambda no floci concluídos!");
+const ACTIONS = {
+	deploy,
+	invoke: access,
+	delete: deleteStack,
+};
+
+const action = process.argv[2];
+if (!ACTIONS[action]) {
+	console.error("Uso: node src/floci.js <deploy|invoke|delete>");
+	process.exit(1);
 }
 
-main().catch((err) => {
+ACTIONS[action]().catch((err) => {
 	console.error("Erro:", err.message);
 	process.exit(1);
 });
