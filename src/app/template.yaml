@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Exemplo real de Lambda com AWS SAM (IaC)
+
+# Configurações padrão aplicadas a todas as funções do template.
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Architectures:
+      - arm64
+    MemorySize: 128
+    Timeout: 5
+    Environment:
+      Variables:
+        STAGE: dev
+
+Resources:
+  # A função Lambda. O SAM expande este tipo curto em vários recursos
+  # CloudFormation (função + IAM role + log group) automaticamente.
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handler.handler
+      # Cria uma URL HTTPS pública que chama a função diretamente,
+      # sem precisar de API Gateway.
+      FunctionUrlConfig:
+        AuthType: NONE
+
+Outputs:
+  # Endpoint público da função (exibido após o deploy).
+  HelloFunctionUrl:
+    Description: URL publica da funcao Lambda
+    Value: !GetAtt HelloFunctionUrl.FunctionUrl
