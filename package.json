@@ -5,6 +5,10 @@
   "private": true,
   "scripts": {
     "deploy": "bash scripts/deploy.sh",
-    "invoke": "bash scripts/invoke.sh"
+    "invoke": "bash scripts/invoke.sh",
+    "gen": "plop --plopfile plopfile.js"
+  },
+  "devDependencies": {
+    "plop": "^4.0.1"
   }
 }

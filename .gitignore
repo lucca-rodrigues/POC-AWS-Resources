@@ -27,11 +27,13 @@ terraform.rc
 # O lock file DEVE ser versionado (trava a versao dos providers) -> excecao
 !.terraform.lock.hcl
 
-# Dados efemeros do floci
+# Dados do floci
 data/
 
-# Repos de referencia clonados (fonte de verdade, nao fazem parte da POC)
+# Referências
 references/
+
+_contexts
 
 # Node
 node_modules/
@@ -41,3 +43,6 @@ node_modules/
 
 # Lixo do macOS
 .DS_Store
+
+
+_contexts
