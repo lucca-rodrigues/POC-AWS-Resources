@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-s3",
+  "version": "1.0.0",
+  "description": "Function de integracao com S3",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0"
+  }
+}

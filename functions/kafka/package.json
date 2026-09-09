@@ -1,0 +1,22 @@
+{
+  "name": "futurosign-kafka",
+  "version": "1.0.0",
+  "description": "Function kafka com a lib interna @grupo-eagle/lib-eagle-nest-kafka (NestJS)",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@grupo-eagle/lib-eagle-nest-kafka": "^1.0.7",
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/config": "^4.0.3",
+    "@nestjs/core": "^11.1.11",
+    "@nestjs/microservices": "^11.1.19",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}

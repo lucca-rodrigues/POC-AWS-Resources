@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-sqs",
+  "version": "1.0.0",
+  "description": "Function de integracao com SQS",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.600.0"
+  }
+}
