@@ -1,0 +1,12 @@
+{
+  "name": "futurosign-crud-update",
+  "version": "1.0.0",
+  "description": "CRUD - Create (TypeORM)",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.600.0",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  }
+}
