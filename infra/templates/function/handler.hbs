@@ -11,6 +11,11 @@ function log(message, data = {}) {
 
 {{#if (eq type 'http')}}
 // HTTP: rota de API — responde com base no path/method recebidos.
+/**
+ * Responde requisicoes HTTP com base no path e method recebidos.
+ * @param {object} event - Evento recebido do API Gateway.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
+ */
 exports.handler = async (event) => {
   try {
     const path = event.rawPath ?? event.path ?? '/';
@@ -39,6 +44,11 @@ exports.handler = async (event) => {
 // Recebe { url } via API Gateway e retorna a resposta da API externa.
 const TIMEOUT_MS = 5000;
 
+/**
+ * Chama uma API externa via fetch e retorna a resposta.
+ * @param {object} event - Evento recebido do API Gateway com { url } no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy com o resultado da integracao.
+ */
 exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body ?? '{}');
@@ -120,6 +130,11 @@ async function getDataSource() {
   return dataSource;
 }
 
+/**
+ * Cria um registro no Postgres usando TypeORM.
+ * @param {object} event - Evento recebido do API Gateway com { nome } no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy com o item criado.
+ */
 exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body ?? '{}');

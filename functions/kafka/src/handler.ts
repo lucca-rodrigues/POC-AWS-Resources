@@ -15,6 +15,11 @@ async function getApp() {
   return app;
 }
 
+/**
+ * Publica um evento no Kafka usando a lib interna lib-eagle-nest-kafka.
+ * @param {object} event - Evento recebido do API Gateway com { id, tipo } no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
+ */
 exports.handler = async (event: { body?: string }) => {
   const body = JSON.parse(event.body ?? '{}');
   const { id, tipo } = body;

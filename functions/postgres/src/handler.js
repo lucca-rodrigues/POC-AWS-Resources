@@ -54,9 +54,9 @@ async function getPgClient() {
 }
 
 /**
- * Handler da Lambda.
- * @param {object} event - Evento recebido (API Gateway) com { id, nome } no body.
- * @returns {Promise<object>} Resposta HTTP no formato proxy.
+ * Salva um registro no Postgres e retorna o registro criado.
+ * @param {object} event - Evento recebido do API Gateway com { id, nome } no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
  */
 exports.handler = async (event) => {
   const body = JSON.parse(event.body ?? '{}');

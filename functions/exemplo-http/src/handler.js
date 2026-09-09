@@ -10,6 +10,11 @@ function log(message, data = {}) {
 }
 
 // HTTP: rota de API — responde com base no path/method recebidos.
+/**
+ * Responde requisicoes HTTP com base no path e method recebidos.
+ * @param {object} event - Evento recebido do API Gateway.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
+ */
 exports.handler = async (event) => {
   try {
     const path = event.rawPath ?? event.path ?? '/';

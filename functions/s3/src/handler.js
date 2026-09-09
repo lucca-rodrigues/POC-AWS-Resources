@@ -15,9 +15,9 @@ function log(message, data = {}) {
 }
 
 /**
- * Handler da Lambda.
- * @param {object} event - Evento recebido (API Gateway) com { id, conteudo } no body.
- * @returns {Promise<object>} Resposta HTTP no formato proxy.
+ * Salva um objeto no S3 e retorna o objeto lido.
+ * @param {object} event - Evento recebido do API Gateway com { id, conteudo } no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
  */
 exports.handler = async (event) => {
   const body = JSON.parse(event.body ?? '{}');

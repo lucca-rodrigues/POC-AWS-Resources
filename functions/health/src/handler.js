@@ -3,9 +3,9 @@
 const STAGE = process.env.STAGE ?? 'dev';
 
 /**
- * Handler da Lambda.
- * @param {object} event - Evento recebido (API Gateway).
- * @returns {Promise<object>} Resposta HTTP no formato proxy.
+ * Responde requisicoes HTTP com base no path e method recebidos.
+ * @param {object} event - Evento recebido do API Gateway.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
  */
 exports.handler = async () => ({
   statusCode: 200,

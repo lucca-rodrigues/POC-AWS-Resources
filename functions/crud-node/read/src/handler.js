@@ -53,9 +53,9 @@ async function getDataSource() {
 }
 
 /**
- * Handler da Lambda.
- * @param {object} event - Evento recebido (API Gateway) com { id } opcional no body.
- * @returns {Promise<object>} Resposta HTTP no formato proxy.
+ * Lista registros do Postgres usando TypeORM.
+ * @param {object} event - Evento recebido do API Gateway com { id } opcional no body.
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
  */
 exports.handler = async (event) => {
   const body = event.body ? JSON.parse(event.body) : {};

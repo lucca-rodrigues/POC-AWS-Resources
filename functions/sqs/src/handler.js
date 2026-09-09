@@ -21,9 +21,9 @@ function log(message, data = {}) {
 }
 
 /**
- * Handler da Lambda.
- * @param {object} event - Evento recebido (API Gateway) com { id, tipo } no body.
- * @returns {Promise<object>} Resposta HTTP no formato proxy.
+ * Envia mensagens para a fila SQS e processa mensagens recebidas do trigger.
+ * @param {object} event - Evento recebido (API Gateway com { id, tipo } ou SQS com Records).
+ * @returns {Promise<object>} Resposta HTTP no formato proxy (statusCode, headers, body).
  */
 exports.handler = async (event) => {
   // SQS trigger: processa as mensagens recebidas.
