@@ -1,0 +1,8 @@
+{
+  "name": "futurosign-exemplo-http",
+  "version": "1.0.0",
+  "description": "Function HTTP de exemplo (referencia)",
+  "private": true,
+  "dependencies": {
+  }
+}
