@@ -1,5 +1,5 @@
 variable "name" {
-  description = "Nome do segredo no Secrets Manager (ex.: core-bancario/cliente)."
+  description = "Nome do segredo no Secrets Manager (ex.: minha-app)."
   type        = string
 }
 

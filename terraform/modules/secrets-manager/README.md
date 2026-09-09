@@ -12,7 +12,7 @@ Funciona contra a AWS real e contra o **ministack** (emulador local).
 module "app_secret" {
   source = "./modules/secrets-manager"
 
-  name = "core-bancario/cliente"
+  name = "minha-app"
 
   secret_string = jsonencode({
     ConnectionStrings = { DefaultConnection = "Host=...;Password=..." }

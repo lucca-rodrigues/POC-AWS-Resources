@@ -12,11 +12,11 @@ a funcao e executada em um container Docker a partir da imagem do ECR.
 module "lambda" {
   source = "./modules/lambda"
 
-  function_name = "core-bancario-cliente-lambda"
+  function_name = "minha-app-lambda"
   image_uri     = "${module.ecr.repository_url}:latest"
 
   environment_variables = {
-    ConnectionStrings__DefaultConnection = "Host=...;Port=5432;Database=core_bancario_cliente;..."
+    ConnectionStrings__DefaultConnection = "Host=...;Port=5432;Database=minha_app;..."
   }
 }
 ```

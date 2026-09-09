@@ -59,7 +59,7 @@ resource "aws_dynamodb_table" "this" {
 
   tags = merge(
     {
-      Projeto = "core-bancario-desembolso"
+      Projeto = "minha-app"
       Card    = "CB-174"
     },
     var.tags

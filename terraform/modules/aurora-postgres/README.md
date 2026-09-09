@@ -12,8 +12,8 @@ a partir de `15432`.
 module "aurora" {
   source = "./modules/aurora-postgres"
 
-  cluster_identifier = "core-bancario-cliente"
-  database_name      = "core_bancario_cliente"
+  cluster_identifier = "minha-app"
+  database_name      = "minha_app"
   master_username    = "postgres"
   master_password    = var.master_password
 }

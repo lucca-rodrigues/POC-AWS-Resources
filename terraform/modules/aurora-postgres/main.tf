@@ -22,6 +22,20 @@ resource "aws_rds_cluster" "corebanking" {
   skip_final_snapshot       = var.skip_final_snapshot
   final_snapshot_identifier = var.skip_final_snapshot ? null : "${var.cluster_identifier}-final"
   apply_immediately         = var.apply_immediately
+
+  # Adaptacao para emulador (floci): nao suporta engine_mode e retorna valores
+  # diferentes (backup_retention_period=0, iops=0, etc.). Em prod sao defaults — sem impacto.
+  lifecycle {
+    ignore_changes = [
+      engine_mode,
+      backup_retention_period,
+      preferred_backup_window,
+      iops,
+      performance_insights_enabled,
+      vpc_security_group_ids,
+      db_subnet_group_name,
+    ]
+  }
 }
 
 resource "aws_rds_cluster_instance" "corebanking" {

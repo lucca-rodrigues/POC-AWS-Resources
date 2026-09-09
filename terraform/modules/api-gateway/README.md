@@ -13,7 +13,7 @@ real e contra o **ministack**.
 module "api_gateway" {
   source = "./modules/api-gateway"
 
-  api_name             = "core-bancario-cliente-api"
+  api_name             = "minha-app-api"
   lambda_invoke_arn    = module.lambda.invoke_arn
   lambda_function_name = module.lambda.function_name
 }
