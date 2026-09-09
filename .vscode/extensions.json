@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "EditorConfig.EditorConfig"
+  ]
+}
