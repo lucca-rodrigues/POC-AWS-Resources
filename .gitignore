@@ -33,7 +33,6 @@ data/
 # Referências
 references/
 
-_contexts
 
 # Node
 node_modules/
@@ -44,5 +43,5 @@ node_modules/
 # Lixo do macOS
 .DS_Store
 
-
-_contexts
+# Memoria do projeto (local, nao versionada)
+_contexts/
