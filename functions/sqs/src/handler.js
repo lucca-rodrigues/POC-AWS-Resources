@@ -1,9 +1,5 @@
 'use strict';
 
-// Function sqs: demonstra SQS de duas formas.
-// 1. Via API Gateway: recebe { id, tipo } e ENVIA mensagem para a fila.
-// 2. Via SQS trigger: a AWS invoca quando ha mensagem na fila (event.Records).
-
 const { SQSClient, SendMessageCommand } = require('@aws-sdk/client-sqs');
 
 const STAGE = process.env.STAGE ?? 'dev';

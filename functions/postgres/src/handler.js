@@ -1,8 +1,5 @@
 'use strict';
 
-// Function postgres: demonstra conexao com Postgres (RDS) via Secrets Manager.
-// Recebe { id, nome } via API Gateway, persiste e retorna o registro.
-
 const { Client } = require('pg');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 
@@ -17,10 +14,8 @@ function log(message, data = {}) {
   console.log(JSON.stringify({ message, data: { ...data, stage: STAGE } }));
 }
 
-// Converte a connection string Npgsql (.NET) para o formato URI do node-postgres.
-// Ex.: "Host=h;Port=5432;Database=d;Username=u;Password=p" -> "postgres://u:p@h:5432/d"
 /**
- * Converte connection string Npgsql para URI do node-postgres.
+ * Converte connection string para o formato URI do node-postgres.
  * @param {string} npgsql - Connection string no formato .NET.
  * @returns {string} URI postgres://user:pass@host:port/db.
  */

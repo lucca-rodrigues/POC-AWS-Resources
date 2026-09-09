@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { KAFKA_PRODUCER, KafkaProducerClient } from '@grupo-eagle/lib-eagle-nest-kafka';
 
-// Mesmo padrão do pld-ftp-api (src/features/pld/application/producers/pld.kafka.producer.ts).
 @Injectable()
 export class KafkaProducerService {
   constructor(

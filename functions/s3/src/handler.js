@@ -1,8 +1,5 @@
 'use strict';
 
-// Function s3: demonstra upload e download de objeto no S3.
-// Recebe { id, conteudo } via API Gateway, salva no bucket e retorna o objeto.
-
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const STAGE = process.env.STAGE ?? 'dev';

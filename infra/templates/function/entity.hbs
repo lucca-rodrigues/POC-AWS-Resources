@@ -1,7 +1,6 @@
 'use strict';
 
 // Entidade do CRUD (TypeORM EntitySchema — sem decorators, JS puro).
-// Equivalente ao DbContext/Entity do EF Core nos repos .NET.
 
 const { EntitySchema } = require('typeorm');
 

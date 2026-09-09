@@ -1,8 +1,5 @@
 'use strict';
 
-// CRUD - Create: cria um registro no Postgres usando TypeORM.
-// Recebe { nome } via API Gateway e retorna o item criado (201).
-
 const { DataSource } = require('typeorm');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 const { Item } = require('./entity');
@@ -18,7 +15,6 @@ function log(message, data = {}) {
   console.log(JSON.stringify({ message, data: { ...data, stage: STAGE } }));
 }
 
-// Converte a connection string Npgsql (.NET) para o formato URI do node-postgres.
 function toPgConnectionString(npgsql) {
   const parts = Object.fromEntries(
     npgsql.split(';').map((part) => part.trim().split('='))

@@ -1,8 +1,5 @@
 'use strict';
 
-// CRUD - Delete: remove um registro do Postgres usando TypeORM.
-// Recebe { id } via API Gateway e retorna o resultado.
-
 const { DataSource } = require('typeorm');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 const { Item } = require('./entity');

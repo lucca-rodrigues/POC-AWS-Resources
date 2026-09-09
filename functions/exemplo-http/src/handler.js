@@ -1,15 +1,11 @@
 'use strict';
 
-// Function HTTP de exemplo (referencia)
-// Tipo: http
-
 const STAGE = process.env.STAGE ?? 'dev';
 
 function log(message, data = {}) {
   console.log(JSON.stringify({ message, data: { ...data, stage: STAGE } }));
 }
 
-// HTTP: rota de API — responde com base no path/method recebidos.
 /**
  * Responde requisicoes HTTP com base no path e method recebidos.
  * @param {object} event - Evento recebido do API Gateway.

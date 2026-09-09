@@ -1,8 +1,5 @@
 'use strict';
 
-// {{description}}
-// Tipo: {{type}}
-
 const STAGE = process.env.STAGE ?? 'dev';
 
 function log(message, data = {}) {
@@ -10,7 +7,6 @@ function log(message, data = {}) {
 }
 
 {{#if (eq type 'http')}}
-// HTTP: rota de API — responde com base no path/method recebidos.
 /**
  * Responde requisicoes HTTP com base no path e method recebidos.
  * @param {object} event - Evento recebido do API Gateway.
@@ -40,8 +36,6 @@ exports.handler = async (event) => {
 {{/if}}
 
 {{#if (eq type 'integracao')}}
-// Integracao com terceiros: chama uma API externa via fetch (com timeout).
-// Recebe { url } via API Gateway e retorna a resposta da API externa.
 const TIMEOUT_MS = 5000;
 
 /**
@@ -83,8 +77,6 @@ exports.handler = async (event) => {
 {{/if}}
 
 {{#if (eq type 'crud')}}
-// CRUD com TypeORM (padrao crud-node): cria um registro no Postgres.
-// Recebe { nome } via API Gateway e retorna o item criado (201).
 const { DataSource } = require('typeorm');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 const { Item } = require('./entity');
@@ -95,7 +87,6 @@ const secretsClient = new SecretsManagerClient({});
 let configCache = null;
 let dataSource = null;
 
-// Converte a connection string Npgsql (.NET) para o formato URI do node-postgres.
 function toPgConnectionString(npgsql) {
   const parts = Object.fromEntries(
     npgsql.split(';').map((part) => part.trim().split('='))

@@ -1,8 +1,5 @@
 'use strict';
 
-// CRUD - Read: lista registros do Postgres usando TypeORM.
-// GET / (sem body) retorna todos; GET com { id } retorna um.
-
 const { DataSource } = require('typeorm');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 const { Item } = require('./entity');

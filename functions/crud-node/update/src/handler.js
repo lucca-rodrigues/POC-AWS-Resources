@@ -1,8 +1,5 @@
 'use strict';
 
-// CRUD - Update: atualiza um registro no Postgres usando TypeORM.
-// Recebe { id, nome } via API Gateway e retorna o item atualizado.
-
 const { DataSource } = require('typeorm');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 const { Item } = require('./entity');
