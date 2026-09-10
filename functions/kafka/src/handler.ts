@@ -1,3 +1,4 @@
+import { INestApplicationContext } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { KafkaProducerService } from './kafka.producer';
@@ -6,9 +7,9 @@ const STAGE = process.env.STAGE ?? 'dev';
 const KAFKA_TOPIC = process.env.KAFKA_TOPIC ?? 'futurosign.integracao.status.tpc';
 
 // App NestJS reutilizado entre invocacoes (warm start).
-let app: ReturnType<typeof NestFactory.createApplicationContext> | null = null;
+let app: INestApplicationContext | null = null;
 
-async function getApp() {
+async function getApp(): Promise<INestApplicationContext> {
   if (!app) {
     app = await NestFactory.createApplicationContext(AppModule);
   }

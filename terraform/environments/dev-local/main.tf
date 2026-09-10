@@ -149,9 +149,11 @@ module "lambda_kafka" {
 
   function_name = "futurosign-kafka"
   image_uri     = "localhost:4566/futurosign-kafka:latest"
+  timeout       = 60
 
   environment_variables = {
     STAGE         = var.stage
+    NODE_ENV      = "development"
     KAFKA_TOPIC   = var.kafka_topic
     KAFKA_BROKERS = aws_msk_cluster.this.bootstrap_brokers
   }
