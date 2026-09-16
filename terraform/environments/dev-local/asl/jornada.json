@@ -1,0 +1,38 @@
+{
+  "Comment": "Jornada de assinatura FuturoSign v2",
+  "StartAt": "GerarInvitationToken",
+  "States": {
+    "GerarInvitationToken": {
+      "Type": "Task",
+      "Resource": "${lambda_gerar_token}",
+      "Next": "CriarJornada"
+    },
+    "CriarJornada": {
+      "Type": "Task",
+      "Resource": "${lambda_criar_jornada}",
+      "Next": "CriarEnvelopeClick"
+    },
+    "CriarEnvelopeClick": {
+      "Type": "Task",
+      "Resource": "${lambda_criar_envelope}",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "MaxAttempts": 3,
+          "IntervalSeconds": 2
+        }
+      ],
+      "Next": "EnviarLinkZenvia"
+    },
+    "EnviarLinkZenvia": {
+      "Type": "Task",
+      "Resource": "${lambda_enviar_link}",
+      "Next": "AtualizarStatusJornada"
+    },
+    "AtualizarStatusJornada": {
+      "Type": "Task",
+      "Resource": "${lambda_atualizar_status}",
+      "End": true
+    }
+  }
+}

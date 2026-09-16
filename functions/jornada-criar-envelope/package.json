@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-jornada-criar-envelope",
+  "version": "1.0.0",
+  "description": "Step da jornada (Cria envelope na Click Sign (mock))",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0"
+  }
+}

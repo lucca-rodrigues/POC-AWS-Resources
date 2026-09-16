@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-jornada-criar-jornada",
+  "version": "1.0.0",
+  "description": "Step da jornada (Cria a jornada de assinatura)",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0"
+  }
+}

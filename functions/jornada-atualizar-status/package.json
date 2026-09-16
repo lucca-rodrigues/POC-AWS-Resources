@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-jornada-atualizar-status",
+  "version": "1.0.0",
+  "description": "Step da jornada (Atualiza o status da jornada)",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0"
+  }
+}

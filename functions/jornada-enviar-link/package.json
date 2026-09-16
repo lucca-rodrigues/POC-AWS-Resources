@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-jornada-enviar-link",
+  "version": "1.0.0",
+  "description": "Step da jornada (Envia link via Zenvia (mock))",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0"
+  }
+}

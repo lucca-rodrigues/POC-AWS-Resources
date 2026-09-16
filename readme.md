@@ -25,6 +25,9 @@ Docs didáticas e objetivas — base inicial para quem nunca atuou com Terraform
 - [03 — Módulos, Variáveis e Outputs](conceitos/terraform/03-modulos-e-variaveis.md)
 - [04 — Setup na máquina](conceitos/terraform/04-setup.md)
 - [05 — Variáveis de Ambiente (POC vs Prod)](conceitos/terraform/05-variaveis-de-ambiente.md)
+- [06 — Step Functions (orquestração de fluxos)](conceitos/terraform/06-step-functions.md)
+- [07 — DynamoDB (banco NoSQL)](conceitos/terraform/07-dynamodb.md)
+- [08 — VPC Privada (segurança)](conceitos/terraform/08-vpc-privada.md)
 
 ### AWS Lambda
 - [01 — O que é e para que serve](conceitos/lambda/01-o-que-e-lambda.md)
@@ -32,6 +35,7 @@ Docs didáticas e objetivas — base inicial para quem nunca atuou com Terraform
 - [03 — Triggers e Integrações](conceitos/lambda/03-triggers-e-servicos.md)
 - [04 — Monitoramento e Debug](conceitos/lambda/04-monitoramento-e-debug.md)
 - [05 — Variáveis de Ambiente e Configuração](conceitos/lambda/05-variaveis-de-ambiente.md)
+- [06 — SDKs e Libs NPM Internas](conceitos/lambda/06-sdks-e-libs-internas.md)
 
 ---
 

@@ -377,4 +377,141 @@ module "api_gateway_exemplo-http" {
   stage_name           = var.api_gateway_stage
   lambda_invoke_arn    = module.lambda_exemplo-http.invoke_arn
   lambda_function_name = module.lambda_exemplo-http.function_name
-}# --- Functions geradas (npm run gen) -----------------------------------------
+}
+# --- Jornada FuturoSign v2 (Step Functions + DynamoDB) ------------------------
+module "dynamodb" {
+  source = "../../modules/dynamodb"
+
+  table_name = "jornada_steps"
+}
+
+# ASL: define a maquina de estados com os 5 steps (resources preenchidos abaixo).
+locals {
+  jornada_asl = templatefile("${path.module}/asl/jornada.json", {
+    lambda_gerar_token     = module.lambda_jornada-gerar-token.function_arn
+    lambda_criar_jornada   = module.lambda_jornada-criar-jornada.function_arn
+    lambda_criar_envelope  = module.lambda_jornada-criar-envelope.function_arn
+    lambda_enviar_link     = module.lambda_jornada-enviar-link.function_arn
+    lambda_atualizar_status = module.lambda_jornada-atualizar-status.function_arn
+  })
+}
+
+module "step_functions" {
+  source = "../../modules/step-functions"
+
+  state_machine_name = "futurosign-jornada"
+  definition         = local.jornada_asl
+}
+
+# Role do Step Functions: invocar as lambdas + gravar no DynamoDB.
+data "aws_iam_policy_document" "sfn" {
+  statement {
+    actions   = ["lambda:InvokeFunction"]
+    resources = [
+      module.lambda_jornada-gerar-token.function_arn,
+      module.lambda_jornada-criar-jornada.function_arn,
+      module.lambda_jornada-criar-envelope.function_arn,
+      module.lambda_jornada-enviar-link.function_arn,
+      module.lambda_jornada-atualizar-status.function_arn,
+    ]
+  }
+  statement {
+    actions   = ["dynamodb:PutItem"]
+    resources = [module.dynamodb.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "sfn" {
+  name   = "futurosign-jornada-sfn"
+  role   = module.step_functions.role_name
+  policy = data.aws_iam_policy_document.sfn.json
+}
+
+# Lambdas dos steps (uma por step, padrao monorepo).
+
+module "ecr_jornada-gerar-token" {
+  source = "../../modules/ecr"
+
+  repository_name = "futurosign-jornada-gerar-token"
+}
+
+module "lambda_jornada-gerar-token" {
+  source = "../../modules/lambda"
+
+  function_name = "futurosign-jornada-gerar-token"
+  image_uri     = "localhost:4566/futurosign-jornada-gerar-token:latest"
+
+  environment_variables = {
+    STEPS_TABLE = module.dynamodb.table_name
+  }
+}
+
+module "ecr_jornada-criar-jornada" {
+  source = "../../modules/ecr"
+
+  repository_name = "futurosign-jornada-criar-jornada"
+}
+
+module "lambda_jornada-criar-jornada" {
+  source = "../../modules/lambda"
+
+  function_name = "futurosign-jornada-criar-jornada"
+  image_uri     = "localhost:4566/futurosign-jornada-criar-jornada:latest"
+
+  environment_variables = {
+    STEPS_TABLE = module.dynamodb.table_name
+  }
+}
+
+module "ecr_jornada-criar-envelope" {
+  source = "../../modules/ecr"
+
+  repository_name = "futurosign-jornada-criar-envelope"
+}
+
+module "lambda_jornada-criar-envelope" {
+  source = "../../modules/lambda"
+
+  function_name = "futurosign-jornada-criar-envelope"
+  image_uri     = "localhost:4566/futurosign-jornada-criar-envelope:latest"
+
+  environment_variables = {
+    STEPS_TABLE = module.dynamodb.table_name
+  }
+}
+
+module "ecr_jornada-enviar-link" {
+  source = "../../modules/ecr"
+
+  repository_name = "futurosign-jornada-enviar-link"
+}
+
+module "lambda_jornada-enviar-link" {
+  source = "../../modules/lambda"
+
+  function_name = "futurosign-jornada-enviar-link"
+  image_uri     = "localhost:4566/futurosign-jornada-enviar-link:latest"
+
+  environment_variables = {
+    STEPS_TABLE = module.dynamodb.table_name
+  }
+}
+
+module "ecr_jornada-atualizar-status" {
+  source = "../../modules/ecr"
+
+  repository_name = "futurosign-jornada-atualizar-status"
+}
+
+module "lambda_jornada-atualizar-status" {
+  source = "../../modules/lambda"
+
+  function_name = "futurosign-jornada-atualizar-status"
+  image_uri     = "localhost:4566/futurosign-jornada-atualizar-status:latest"
+
+  environment_variables = {
+    STEPS_TABLE = module.dynamodb.table_name
+  }
+}
+
+# --- Functions geradas (npm run gen) -----------------------------------------

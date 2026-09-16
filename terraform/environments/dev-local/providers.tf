@@ -22,5 +22,7 @@ provider "aws" {
     s3             = "http://localhost:4566"
     sqs            = "http://localhost:4566"
     kafka          = "http://localhost:4566"
+    dynamodb       = "http://localhost:4566"
+    sfn            = "http://localhost:4566"
   }
 }

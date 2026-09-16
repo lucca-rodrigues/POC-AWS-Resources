@@ -1,0 +1,9 @@
+{
+  "name": "futurosign-jornada-gerar-token",
+  "version": "1.0.0",
+  "description": "Step da jornada (Gera o invitation token)",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0"
+  }
+}
