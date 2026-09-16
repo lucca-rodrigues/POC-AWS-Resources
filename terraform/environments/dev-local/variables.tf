@@ -96,3 +96,30 @@ variable "kafka_topic" {
   type        = string
   default     = "futurosign.integracao.status.tpc"
 }
+
+# --- Integracoes externas (credenciais mock em dev) --------------------------
+variable "click_sign_base_url" {
+  description = "URL base da Click Sign (valor mock em dev)."
+  type        = string
+  default     = "https://api.clicksign.com/api/v1"
+}
+
+variable "click_sign_access_token" {
+  description = "Access token da Click Sign (mock em dev)."
+  type        = string
+  default     = "click-sign-token-dev"
+  sensitive   = true
+}
+
+variable "zenvia_base_url" {
+  description = "URL base da Zenvia (valor mock em dev)."
+  type        = string
+  default     = "https://api.zenvia.com/v2"
+}
+
+variable "zenvia_api_token" {
+  description = "API token da Zenvia (mock em dev)."
+  type        = string
+  default     = "zenvia-token-dev"
+  sensitive   = true
+}

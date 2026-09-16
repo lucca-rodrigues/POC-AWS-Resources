@@ -49,6 +49,14 @@ module "app_secret" {
       BootstrapServers = aws_msk_cluster.this.bootstrap_brokers
       Topic            = var.kafka_topic
     }
+    ClickSign = {
+      BaseUrl     = var.click_sign_base_url
+      AccessToken = var.click_sign_access_token
+    }
+    Zenvia = {
+      BaseUrl  = var.zenvia_base_url
+      ApiToken = var.zenvia_api_token
+    }
   })
 }
 
@@ -477,7 +485,10 @@ module "lambda_jornada-criar-envelope" {
 
   environment_variables = {
     STEPS_TABLE = module.dynamodb.table_name
+    SECRET_NAME = module.app_secret.name
   }
+
+  secret_arns = [module.app_secret.arn]
 }
 
 module "ecr_jornada-enviar-link" {
@@ -494,7 +505,10 @@ module "lambda_jornada-enviar-link" {
 
   environment_variables = {
     STEPS_TABLE = module.dynamodb.table_name
+    SECRET_NAME = module.app_secret.name
   }
+
+  secret_arns = [module.app_secret.arn]
 }
 
 module "ecr_jornada-atualizar-status" {

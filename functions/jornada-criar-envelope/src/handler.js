@@ -1,21 +1,45 @@
 'use strict';
 
 const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
+const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
 
 const TABLE = process.env.STEPS_TABLE;
+const SECRET_NAME = process.env.SECRET_NAME;
 const STEP = 'criar-envelope';
 
 const dynamo = new DynamoDBClient({});
+const secretsClient = new SecretsManagerClient({});
+
+let configCache = null;
+
+async function getConfig() {
+  if (configCache) return configCache;
+  const response = await secretsClient.send(
+    new GetSecretValueCommand({ SecretId: SECRET_NAME })
+  );
+  configCache = JSON.parse(response.SecretString);
+  return configCache;
+}
 
 /**
  * Cria envelope na Click Sign (mock) e registra o step no DynamoDB.
+ * Credenciais da Click Sign lidas do Secrets Manager (padrao da org).
  * @param {object} event - Evento recebido do Step Functions com { jornada_id }.
  * @returns {Promise<object>} Resultado do step.
  */
 exports.handler = async (event) => {
   const { jornada_id } = event;
-  // Mock da integracao Click Sign (SDK real: lib NPM)
+
+  // Credenciais da Click Sign via Secrets Manager (nao hardcoded).
+  const config = await getConfig();
+  const { BaseUrl, AccessToken } = config.ClickSign;
   const envelope_id = `env_${jornada_id}`;
+
+  console.log(JSON.stringify({
+    message: 'clicksign.envelope.criado',
+    data: { jornada_id, baseUrl: BaseUrl, tokenMasked: AccessToken.slice(0, 4) + '***' },
+  }));
+
   await dynamo.send(new PutItemCommand({
     TableName: TABLE,
     Item: {
